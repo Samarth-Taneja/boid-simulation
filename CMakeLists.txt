@@ -59,14 +59,14 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
 list(APPEND TEST_FILES tests/vector_tests.cc)
 
 ci_make_app(
-        APP_NAME        ideal-gas-visualizer
+        APP_NAME        boid-simulation-visualizer
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         apps/cinder_app_main.cc ${SOURCE_FILES}
         INCLUDES        include
 )
 
 ci_make_app(
-        APP_NAME        ideal-gas-test
+        APP_NAME        boid-simulation-test
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         tests/test_main.cc ${SOURCE_FILES} ${TEST_FILES}
         INCLUDES        include
@@ -74,5 +74,5 @@ ci_make_app(
 )
 
 if(MSVC)
-    set_property(TARGET ideal-gas-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
+    set_property(TARGET  boid-simulation-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
 endif()
