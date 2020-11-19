@@ -82,11 +82,11 @@ MathVector& MathVector::operator-=(const MathVector& other) {
   x_ -= other.x_; y_ -= other.y_; z_ -= other.z_;
   return *this;
 }
-MathVector& operator+(const MathVector& first, const MathVector& second) {
+MathVector operator+(const MathVector& first, const MathVector& second) {
   MathVector sum(first.x_ + second.x_, first.y_ + second.y_, first.z_ + second.z_);
   return sum;
 }
-MathVector& operator-(const MathVector& first, const MathVector& second) {
+MathVector operator-(const MathVector& first, const MathVector& second) {
   MathVector sum(first.x_ - second.x_, first.y_ - second.y_, first.z_ - second.z_);
   return sum;
 }
@@ -95,12 +95,12 @@ MathVector& MathVector::operator*=(double scalar) {
   x_ *= scalar; y_ *= scalar; z_ *= scalar;
   return *this;
 }
-MathVector& operator*(const MathVector& vector, const double& scalar) {
+MathVector operator*(const MathVector& vector, const double& scalar) {
   MathVector product = vector;
   product *= scalar;
   return product;
 }
-MathVector& operator*(const double& scalar, const MathVector& vector) {
+MathVector operator*(const double& scalar, const MathVector& vector) {
   return (operator*(vector, scalar));
 }
 MathVector& MathVector::operator-() {
@@ -113,7 +113,7 @@ MathVector& MathVector::operator/=(double scalar) {
   }
   return *this;
 }
-MathVector& operator/(const MathVector& vector, const double& scalar) {
+MathVector operator/(const MathVector& vector, const double& scalar) {
   MathVector quotient = vector;
   quotient /= scalar;
   return quotient;
@@ -122,7 +122,7 @@ MathVector& operator/(const MathVector& vector, const double& scalar) {
 double operator*(const MathVector& first, const MathVector& second) {
   return ((first.x_ * second.x_) + (first.y_ * second.y_) + (first.z_ * second.z_));
 }
-MathVector& operator%(const MathVector& first, const MathVector& second) {
+MathVector operator%(const MathVector& first, const MathVector& second) {
   MathVector cross(first.y_*second.z_ - first.z_*second.y_,
                    first.z_*first.x_ - first.x_*first.z_,
                    first.x_*second.y_ - first.y_*second.x_);

@@ -34,7 +34,7 @@ class IdealGasApp : public ci::app::App {
   std::vector<float> radii_{7,10,13};
   std::vector<size_t> particle_nums_ {25,25,25};
   GasTank tank_;
-  std::vector<Histogram> histograms_;
+  //std::vector<Histogram> histograms_;
 };
 
 }  // namespace visualizer

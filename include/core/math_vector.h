@@ -92,11 +92,11 @@ class MathVector {
   /**
    * Vector addition. Adds components of first and second.
    */
-  friend MathVector& operator+(const MathVector& first, const MathVector& second);
+  friend MathVector operator+(const MathVector& first, const MathVector& second);
   /**
    * Vector subtraction. Subtracts components of second from first.
    */
-  friend MathVector& operator-(const MathVector& first, const MathVector& second);
+  friend MathVector operator-(const MathVector& first, const MathVector& second);
 
   //Scalar multiplication and division
   /**
@@ -109,13 +109,13 @@ class MathVector {
    * @param scalar Scalar value to multiply the MathVector by.
    * @param vector MathVector to be multiplied by the scalar.
    */
-  friend MathVector& operator*(const double& scalar, const MathVector& vector);
+  friend MathVector operator*(const double& scalar, const MathVector& vector);
   /**
    * Scalar Multiplication.
    * @param vector MathVector to be multiplied by the scalar.
    * @param scalar Scalar value to multiply the MathVector by.
    */
-  friend MathVector& operator*(const MathVector& vector, const double& scalar);
+  friend MathVector operator*(const MathVector& vector, const double& scalar);
   //Negates components.
   MathVector& operator-();
   /**
@@ -128,7 +128,7 @@ class MathVector {
    * @param vector MathVector to be divided by the scalar.
    * @param scalar Scalar value to divide the MathVector by.
    */
-  friend MathVector& operator/(const MathVector& vector, const double& scalar);
+  friend MathVector operator/(const MathVector& vector, const double& scalar);
 
   //Dot and Cross product
   /**
@@ -138,7 +138,7 @@ class MathVector {
   /**
    * Cross product.
    */
-  friend MathVector& operator%(const MathVector& first, const MathVector& second);
+  friend MathVector operator%(const MathVector& first, const MathVector& second);
 };
 
 }
