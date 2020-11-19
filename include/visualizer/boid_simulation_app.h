@@ -13,9 +13,9 @@ namespace visualizer {
  * Allows a user to draw a digit on a sketchpad and uses Naive Bayes to
  * classify it.
  */
-class IdealGasApp : public ci::app::App {
+class BoidSimApp : public ci::app::App {
  public:
-  IdealGasApp();
+  BoidSimApp();
 
   void draw() override;
   void update() override;
@@ -30,11 +30,6 @@ class IdealGasApp : public ci::app::App {
   const double kHistSizeY = 125;
 
  private:
-  std::vector<float> masses_{10,25,50};
-  std::vector<float> radii_{7,10,13};
-  std::vector<size_t> particle_nums_ {25,25,25};
-  GasTank tank_;
-  //std::vector<Histogram> histograms_;
 };
 
 }  // namespace visualizer

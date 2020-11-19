@@ -1,68 +1,96 @@
 #pragma once
 
+#include <core/math_vector.h>
 #include "cinder/gl/gl.h"
+#include <vector>
 
 namespace boidsimulation {
 
-class Particle {
+using boidsimulation::MathVector;
+
+class Boid {
  public:
-  Particle() = default;
+  Boid() = default;
 
   /**
-   * Constructor that takes in optional position, velocity, and radius parameters.
-   * @param position_x The vec2 value of position.
-   * @param velocity_y The vec2 value of velocity.
-   * @param radius The float value of radius.
+   * Constructor that takes in optional position, velocity, and acceleration parameters.
+   * @param position The MathVector value of position.
+   * @param velocity The MathVector value of velocity.
+   * @param mass The double value of mass.
    */
-  Particle(const glm::vec2& position, const glm::vec2& velocity, float mass,
-           float radius, ci::Color8u color = ci::Color8u(255,255,255)) :
-        position_(position), velocity_(velocity), mass_(mass), radius_(radius), color_(color) {};
-
-  /**
-   * Constructor that takes in optional position x&y, velocity x&y, and radius parameters.
-   * @param position_x The float X value of position.
-   * @param position_y The float Y value of position.
-   * @param velocity_x The float X value of velocity.
-   * @param velocity_y The float Y value of velocity.
-   * @param radius The float value of radius.
-   */
-  Particle(float position_x, float position_y, float velocity_x, float velocity_y,
-float mass, float radius = 1, ci::Color8u color = ci::Color8u(255,255,255)) :
-      position_(glm::vec2(position_x, position_y)), velocity_(glm::vec2(velocity_x, velocity_y)),
-mass_(mass), radius_(radius), color_(color) {};
+  Boid(const MathVector& position, const MathVector& velocity,
+       const MathVector& acceleration, double size = 7, double mass = 1,
+       ci::Color8u color = ci::Color8u(255,255,255)) :
+        position_(position), velocity_(velocity), acceleration_(velocity),
+        size_(size), mass_(mass), color_(color) {};
 
   /**
    * Adds current velocity to the current position.
    */
-  void UpdatePosition();
+  void Update(std::vector<Boid&>& flock);
 
   /**
-   * Negates Particle's velocity in x or y axis.
-   * @param axis Should be 0 if x-axis. 1 if y-axis. 0 by default.
+   * Changes acceleration based on the
+   */
+  void FlockingBehavior(std::vector<Boid&>& flock);
+
+  /**
+   * @return A MathVector representing the force applied due to Separation.
+   * i.e. moving away from local flockmates to not crowd them.
+   */
+  MathVector Separation(std::vector<Boid&>& flock);
+  /**
+   * @return A MathVector representing the force applied due to Alignment.
+   * i.e. facing the average direction of the flock.
+   */
+  MathVector Alignment(std::vector<Boid&>& flock);
+  /**
+   * @return A MathVector representing the force applied due to Cohesion.
+   * i.e. moving towards the center of the flock.
+   */
+  MathVector Cohesion(std::vector<Boid&>& flock);
+
+  /**
+   * Changes acceleration based on provided force.
+   * @param force Force to change the acceleration with.
+   */
+  void ApplyForce(const MathVector& force);
+
+  /**
+   * Negates Particle's velocity in x,y, or z axis.
+   * @param axis Should be 0 if x-axis. 1 if y-axis. 2 if z-axis. 0 by default.
    */
   void WallCollide(int axis = 0);
 
-  /**
-   * Returns the particle's new velocity after collision with another particle.
-   * Other particle's velocity must be calculated with a separate function call.
-   * @param other_particle The other particle in the collision.
-   */
-  glm::vec2 ParticleCollide(const Particle& other_particle);
 
   //Getters & Setters
-  const glm::vec2& GetPosition() const;
-  const glm::vec2& GetVelocity() const;
-  float GetRadius() const;
-  float GetMass() const;
+  const boidsimulation::MathVector& GetPosition() const;
+  const boidsimulation::MathVector& GetVelocity() const;
+  const boidsimulation::MathVector& GetAcceleration() const;
+  double GetMass() const;
   const ci::Color8u& GetColor() const;
-  void SetVelocity(const glm::vec2 velocity);
+
+  double GetSeparationScale() const;
+  double GetAlignmentScale() const;
+  double GetCohesionScale() const;
+  void SetSeparationScale(double separationScale);
+  void SetAlignmentScale(double alignmentScale);
+  void SetCohesionScale(double cohesionScale);
 
  private:
-  glm::vec2 position_ = glm::vec2(0,0);
-  glm::vec2 velocity_ = glm::vec2(0,0);
-  float radius_ = 1;
-  float mass_ = 1;
+  boidsimulation::MathVector position_;
+  boidsimulation::MathVector velocity_;
+  boidsimulation::MathVector acceleration_;
+  double size_ = 7;
+  double mass_ = 1;
   ci::Color8u color_;
+
+  double max_speed_ = 10;
+  double vision_ = 21;
+
+  double separation_scale_ = 1;
+  double alignment_scale_ = 1;
+  double cohesion_scale_ = 1;
 };
 
 }  // namespace idealgas
