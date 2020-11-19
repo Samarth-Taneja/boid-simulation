@@ -1,6 +1,6 @@
-#include <visualizer/ideal_gas_app.h>
+#include <visualizer/boid_simulation_app.h>
 
-using idealgas::visualizer::IdealGasApp;
+using boidsimulation::visualizer::IdealGasApp;
 
 void prepareSettings(IdealGasApp::Settings* settings) {
   settings->setResizable(false);

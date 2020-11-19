@@ -3,10 +3,9 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "gas_tank.h"
-#include "histogram.h"
+#include "environment.h"
 
-namespace idealgas {
+namespace boidsimulation {
 
 namespace visualizer {
 

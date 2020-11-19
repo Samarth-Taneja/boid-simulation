@@ -2,7 +2,7 @@
 
 #include "cinder/gl/gl.h"
 
-namespace idealgas {
+namespace boidsimulation {
 
 class Particle {
  public:

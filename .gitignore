@@ -146,3 +146,4 @@ _deps
 /.idea/.name
 
 # End of https://www.gitignore.io/api/c++,cmake,clion
+/.idea/final-project.iml

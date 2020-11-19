@@ -1,6 +1,6 @@
-#include <visualizer/ideal_gas_app.h>
+#include <visualizer/boid_simulation_app.h>
 
-namespace idealgas {
+namespace boidsimulation {
 
 namespace visualizer {
 
@@ -10,28 +10,15 @@ IdealGasApp::IdealGasApp()
             kWindowSizeY - 2 * kMargin, particle_nums_,
             masses_, radii_) {
   ci::app::setWindowSize((int) kWindowSizeX, (int) kWindowSizeY);
-
-  //Creating Histograms
-  for(size_t hist_num = 0; hist_num < 3; hist_num++) {
-    histograms_.push_back(Histogram(glm::vec2(kMargin,(hist_num+1) * kMargin + hist_num * kHistSizeY),
-                                    kHistSizeX, kHistSizeY, masses_.at(hist_num), 1.5f*radii_.at(2)));
-  }
 }
 
 void IdealGasApp::update() {
   tank_.Update();
-  for(auto& histogram : histograms_) {
-    histogram.Update(tank_.GetParticles());
-  }
 }
 
 void IdealGasApp::draw() {
   ci::gl::clear(ci::Color("black"));
   tank_.Draw();
-
-  for(auto& histogram : histograms_) {
-    histogram.Draw();
-  }
 
   double tank_middle_x = 2 * kMargin + kHistSizeX + (kWindowSizeX - 3 * kMargin - kHistSizeX)/2;
   ci::gl::drawStringCentered(

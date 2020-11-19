@@ -1,11 +1,12 @@
 #pragma once
 
-#include <core/particle.h>
+#include <core/boid.h>
+
 #include <vector>
 
 #include "cinder/gl/gl.h"
 
-namespace idealgas {
+namespace boidsimulation {
 
 namespace visualizer {
 
@@ -52,7 +53,7 @@ class GasTank {
    * velocity accordingly. Helper function for Update method.
    * @param current_particle The current Particle.
    */
-  void CheckWallCollisions(idealgas::Particle& current_particle);
+  void CheckWallCollisions(boidsimulation::Particle& current_particle);
 
   /**
    * Checks if the current Particle is colliding with any other particles and
@@ -81,7 +82,7 @@ class GasTank {
   /**
    * Returns the current Particle type that will be called by AddParticle()
    */
-  const idealgas::Particle& GetCurrentParticle() const;
+  const boidsimulation::Particle& GetCurrentParticle() const;
 
   /**
    * Changes the current particle to the next one in the vector of Particle types.
@@ -91,12 +92,12 @@ class GasTank {
   /**
    * Returns the particles in the tank.
    */
-  const std::vector<idealgas::Particle>& GetParticles() const;
+  const std::vector<boidsimulation::Particle>& GetParticles() const;
 
   /**
    * Returns the particle types.
    */
-  const std::vector<idealgas::Particle>& GetParticleTypes() const;
+  const std::vector<boidsimulation::Particle>& GetParticleTypes() const;
 
  private:
   glm::vec2 top_left_corner_;
@@ -107,10 +108,10 @@ class GasTank {
                                    ci::Color8u(0,255,0),
                                    ci::Color8u(255,0,0)};
 
-  std::vector<idealgas::Particle> particle_types_;
+  std::vector<boidsimulation::Particle> particle_types_;
   size_t current_index_ = -1;
 
-  std::vector<idealgas::Particle> particles_;
+  std::vector<boidsimulation::Particle> particles_;
   float radius_ = 7.5;
 };
 

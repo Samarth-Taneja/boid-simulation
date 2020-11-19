@@ -1,6 +1,6 @@
-#include <visualizer/gas_tank.h>
+#include <visualizer/environment.h>
 
-namespace idealgas {
+namespace boidsimulation {
 
 namespace visualizer {
 
@@ -22,8 +22,7 @@ GasTank::GasTank(const vec2& top_left_corner, double pixels_x, double pixels_y,
 
 void GasTank::CreateParticleTemplates(std::vector<size_t> particle_nums, std::vector<float> masses, std::vector<float> radii) {
   for(size_t particle_num = 0; particle_num < particle_nums.size(); ++particle_num) {
-    particle_types_.push_back(
-        idealgas::Particle(glm::vec2(0,0), glm::vec2(0,0),
+    particle_types_.push_back(boidsimulation::Particle(glm::vec2(0,0), glm::vec2(0,0),
                            masses.at(particle_num),radii.at(particle_num),
                            colors_.at(particle_num)));
   }
@@ -39,7 +38,7 @@ void GasTank::InitializeParticles(std::vector<size_t> particle_nums) {
       glm::vec2 velocity = glm::vec2(rand() % (2*(int)radius_) - (int)radius_,
                                      rand() % (2*(int)radius_) - (int)radius_);
 
-      particles_.push_back(idealgas::Particle(position, velocity,
+      particles_.push_back(boidsimulation::Particle(position, velocity,
                                               particle_types_.at(type).GetMass(),
                                               particle_types_.at(type).GetRadius(),
                                               particle_types_.at(type).GetColor()));
@@ -49,7 +48,7 @@ void GasTank::InitializeParticles(std::vector<size_t> particle_nums) {
 
 void GasTank::Update() {
   for(size_t particle_num = 0; particle_num < particles_.size(); ++particle_num) {
-    idealgas::Particle& current_particle = particles_.at(particle_num);
+    boidsimulation::Particle& current_particle = particles_.at(particle_num);
 
     //Checking wall collisions
     CheckWallCollisions(current_particle);
@@ -62,7 +61,7 @@ void GasTank::Update() {
   }
 }
 
-void GasTank::CheckWallCollisions(idealgas::Particle& current_particle) {
+void GasTank::CheckWallCollisions(boidsimulation::Particle& current_particle) {
   double left = top_left_corner_.x, right = top_left_corner_.x + pixels_x_,
       top = top_left_corner_.y, bottom = top_left_corner_.y + pixels_y_;
   //Collision with vertical walls
@@ -90,10 +89,10 @@ void GasTank::CheckWallCollisions(idealgas::Particle& current_particle) {
 }
 
 void GasTank::CheckParticleCollisions(size_t particle_index) {
-  idealgas::Particle& current_particle = particles_.at(particle_index);
+  boidsimulation::Particle& current_particle = particles_.at(particle_index);
   for(size_t particle_num = 0; particle_num < particles_.size(); ++particle_num) {
     if(particle_num != particle_index) {
-      idealgas::Particle& other_particle = particles_.at(particle_num);
+      boidsimulation::Particle& other_particle = particles_.at(particle_num);
       //if other particle in range perform collision calculation
       double distance = glm::distance(current_particle.GetPosition(), other_particle.GetPosition());
       if(distance < (current_particle.GetRadius() + other_particle.GetRadius())) {
@@ -130,7 +129,7 @@ void GasTank::AddParticle(const vec2& brush_screen_coords) {
       brush_screen_coords.y > top && brush_screen_coords.y < bottom) {
     glm::vec2 velocity = glm::vec2(rand() % (2*(int)radius_) - (int)radius_,
                                    rand() % (2*(int)radius_) - (int)radius_);
-    particles_.push_back(idealgas::Particle(brush_screen_coords, velocity,
+    particles_.push_back(boidsimulation::Particle(brush_screen_coords, velocity,
                                             particle_types_.at(current_index_).GetMass(),
                                             particle_types_.at(current_index_).GetRadius(),
                                             particle_types_.at(current_index_).GetColor()));
@@ -146,13 +145,13 @@ void GasTank::ChangeCurrentParticle() {
   current_index_ = ++current_index_ % particle_types_.size();
 }
 
-const idealgas::Particle& GasTank::GetCurrentParticle() const {
+const boidsimulation::Particle& GasTank::GetCurrentParticle() const {
   return particle_types_.at(current_index_);
 }
-const std::vector<idealgas::Particle> & GasTank::GetParticleTypes() const {
+const std::vector<boidsimulation::Particle> & GasTank::GetParticleTypes() const {
   return particle_types_;
 }
-const std::vector<idealgas::Particle> & GasTank::GetParticles() const {
+const std::vector<boidsimulation::Particle> & GasTank::GetParticles() const {
   return particles_;
 }
 

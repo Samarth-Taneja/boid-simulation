@@ -1,6 +1,6 @@
-#include <core/particle.h>
+#include <core/boid.h>
 
-namespace idealgas {
+namespace boidsimulation {
 
 void Particle::UpdatePosition() {
   position_ += velocity_;

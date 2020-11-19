@@ -49,14 +49,14 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND CORE_SOURCE_FILES src/core/particle.cc)
+list(APPEND CORE_SOURCE_FILES src/core/boid.cc)
+list(APPEND CORE_SOURCE_FILES src/core/math_vector.cpp)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
-        src/visualizer/ideal_gas_app.cc
-        src/visualizer/histogram.cc
-        src/visualizer/gas_tank.cc)
+        src/visualizer/boid_simulation_app.cc
+        src/visualizer/environment.cc)
 
-list(APPEND TEST_FILES tests/particle_tests.cc)
+list(APPEND TEST_FILES tests/vector_tests.cc)
 
 ci_make_app(
         APP_NAME        ideal-gas-visualizer
