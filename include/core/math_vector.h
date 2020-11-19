@@ -36,21 +36,40 @@ class MathVector {
    */
   ~MathVector();
 
+  //Vector magnitude related methods
   /**
    * @return The magnitude of the vector
    */
-  double Length();
-
+  double Length() const;
   /**
    * Normalizes the vector. Divides each component by the magnitude.
    */
   void Normalize();
+  /**
+   * Changes the magnitude of the vector to the provided value while keeping the
+   * direction the same.
+   * @param magnitude The new magnitude of the vector.
+   */
+  void ChangeMagnitude(double magnitude);
+  /**
+   * Copies the magnitude of the provided vector while keeping the direction the
+   * same.
+   * @param other_vector The vector to copy the magnitude from.
+   */
+  void ChangeMagnitude(const MathVector& other_vector);
+  /**
+   * Copies the direction of the provided vector while keeping the magnitude the
+   * same.
+   * @param other_vector The vector to copy the direction from.
+   */
+  void ChangeDirection(const MathVector& other_vector);
 
+  //Operator Overloads
   /**
    * @return Vector component corresponding to the provided index.
    * Vector is 0-indexed.
    */
-  double &operator[](const size_t index);
+  double &operator[](size_t index);
 };
 
 }
