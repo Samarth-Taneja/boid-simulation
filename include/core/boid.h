@@ -27,28 +27,28 @@ class Boid {
   /**
    * Adds current velocity to the current position.
    */
-  void Update(std::vector<Boid&>& flock);
+  void Update(std::vector<Boid>& flock);
 
   /**
-   * Changes acceleration based on the
+   * Changes acceleration based on the 3 rules of flocking behavior.
    */
-  void FlockingBehavior(std::vector<Boid&>& flock);
+  void FlockingBehavior(std::vector<Boid>& flock);
 
   /**
    * @return A MathVector representing the force applied due to Separation.
    * i.e. moving away from local flockmates to not crowd them.
    */
-  MathVector Separation(std::vector<Boid&>& flock);
+  MathVector Separation(std::vector<Boid>& flock);
   /**
    * @return A MathVector representing the force applied due to Alignment.
    * i.e. facing the average direction of the flock.
    */
-  MathVector Alignment(std::vector<Boid&>& flock);
+  MathVector Alignment(std::vector<Boid>& flock);
   /**
    * @return A MathVector representing the force applied due to Cohesion.
    * i.e. moving towards the center of the flock.
    */
-  MathVector Cohesion(std::vector<Boid&>& flock);
+  MathVector Cohesion(std::vector<Boid>& flock);
 
   /**
    * Changes acceleration based on provided force.
@@ -61,7 +61,6 @@ class Boid {
    * @param axis Should be 0 if x-axis. 1 if y-axis. 2 if z-axis. 0 by default.
    */
   void WallCollide(int axis = 0);
-
 
   //Getters & Setters
   const boidsimulation::MathVector& GetPosition() const;
@@ -86,7 +85,7 @@ class Boid {
   ci::Color8u color_;
 
   double max_speed_ = 10;
-  double vision_ = 21;
+  double vision_ = 35;
 
   double separation_scale_ = 1;
   double alignment_scale_ = 1;

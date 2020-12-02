@@ -7,7 +7,7 @@ void Boid::ApplyForce(const MathVector& force) {
   acceleration_ += acceleration;
 }
 
-void Boid::Update(std::vector<Boid&>& flock) {
+void Boid::Update(std::vector<Boid>& flock) {
   acceleration_ *= 0;
   FlockingBehavior(flock);
   velocity_ += acceleration_;
@@ -17,20 +17,20 @@ void Boid::Update(std::vector<Boid&>& flock) {
   position_ += velocity_;
 }
 
-void Boid::FlockingBehavior(std::vector<Boid&>& flock) {
+void Boid::FlockingBehavior(std::vector<Boid>& flock) {
   ApplyForce(separation_scale_ * Separation(flock));
   ApplyForce(alignment_scale_ * Alignment(flock));
   ApplyForce(cohesion_scale_ * Cohesion(flock));
 }
-MathVector Boid::Separation(std::vector<Boid&>& flock) {
+MathVector Boid::Separation(std::vector<Boid>& flock) {
   MathVector temp;
   return temp;
 }
-MathVector Boid::Alignment(std::vector<Boid&>& flock) {
+MathVector Boid::Alignment(std::vector<Boid>& flock) {
   MathVector temp;
   return temp;
 }
-MathVector Boid::Cohesion(std::vector<Boid&>& flock) {
+MathVector Boid::Cohesion(std::vector<Boid>& flock) {
   MathVector temp;
   return temp;
 }
