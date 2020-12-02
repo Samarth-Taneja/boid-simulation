@@ -31,8 +31,25 @@ MathVector Boid::Alignment(std::vector<Boid>& flock) {
   return temp;
 }
 MathVector Boid::Cohesion(std::vector<Boid>& flock) {
-  MathVector temp;
-  return temp;
+  MathVector center;
+  double count = 0;
+  for(size_t boid_index = 0; boid_index < flock.size(); ++boid_index) {
+    //checking if other Boid is visible to current Boid
+    double distance = position_.Distance(flock.at(boid_index).position_);
+    if(distance > 0 && distance <= vision_) {
+      center += flock.at(boid_index).position_;
+      ++count;
+    }
+  }
+  //calculating average position of flock
+  if(count > 0) {
+    center /= count;
+    MathVector cohesion_force = position_ - center;
+    cohesion_force.ChangeMagnitude(max_acceleration_);
+    return cohesion_force;
+  } else {
+    return center;
+  }
 }
 
 void Boid::WallCollide(int axis) {

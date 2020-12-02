@@ -85,6 +85,7 @@ class Boid {
   ci::Color8u color_;
 
   double max_speed_ = 10;
+  double max_acceleration_ = 2;
   double vision_ = 35;
 
   double separation_scale_ = 1;
