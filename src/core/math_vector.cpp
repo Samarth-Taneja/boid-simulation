@@ -54,6 +54,11 @@ void MathVector::ChangeDirection(const MathVector& other_vector) {
   ChangeMagnitude(magnitude);
 }
 
+double MathVector::Distance(const MathVector& other_vector) {
+  MathVector temp_vector = *this - other_vector;
+  return temp_vector.Length();
+}
+
 //Vector operations
 double& MathVector::operator[](size_t index) {
   if(index == 0) {

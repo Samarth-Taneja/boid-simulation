@@ -65,6 +65,12 @@ class MathVector {
    */
   void ChangeDirection(const MathVector& other_vector);
 
+  /**
+   * Calculates the length of the vector minus the other vector.
+   * @param other_vector The vector to calculate distance to.
+   */
+  double Distance(const MathVector& other_vector);
+
   //Operator Overloads
   /**
    * @return Vector component corresponding to the provided index.
