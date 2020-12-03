@@ -26,8 +26,29 @@ void Boid::FlockingBehavior(std::vector<Boid>& flock) {
   ApplyForce(cohesion_scale_ * Cohesion(flock));
 }
 MathVector Boid::Separation(std::vector<Boid>& flock) {
-  MathVector temp;
-  return temp;
+  MathVector separation;
+  size_t count = 0;
+  for(size_t boid_index = 0; boid_index < flock.size(); ++boid_index) {
+    //checking if other Boid is visible to current Boid
+    double distance = position_.Distance(flock.at(boid_index).position_);
+    if(distance > 0 && distance <= 2 * size_) {
+      MathVector difference = position_ - flock.at(boid_index).position_;
+      difference.Normalize();
+      difference /= distance; //weight separation by distance to other Boid
+      separation += difference;
+      ++count;
+    }
+  }
+  //calculating average separation
+  if (count > 0) {
+    separation /= count;
+    if(separation.Length() > max_acceleration_) {
+      separation.ChangeMagnitude(max_acceleration_);
+    }
+    return separation;
+  } else {
+    return separation;
+  }
 }
 MathVector Boid::Alignment(std::vector<Boid>& flock) {
   MathVector heading;
@@ -43,10 +64,12 @@ MathVector Boid::Alignment(std::vector<Boid>& flock) {
   //calculating average heading of flock
   if (count > 0) {
     heading /= count;
-    heading.ChangeMagnitude(max_speed_);
+    //heading.ChangeMagnitude(max_speed_);
     //vector pointing from velocity to avg heading of visible flock
     MathVector alignment_force = heading - velocity_;
-    alignment_force.ChangeMagnitude(max_acceleration_);
+    if(alignment_force.Length() > max_acceleration_) {
+      alignment_force.ChangeMagnitude(max_acceleration_);
+    }
     return alignment_force;
   } else {
     return heading;
@@ -68,7 +91,9 @@ MathVector Boid::Cohesion(std::vector<Boid>& flock) {
     center /= count;
     //vector pointing from position to center of visible flock
     MathVector cohesion_force = center - position_;
-    cohesion_force.ChangeMagnitude(max_acceleration_);
+    if(cohesion_force.Length() > max_acceleration_) {
+      cohesion_force.ChangeMagnitude(max_acceleration_);
+    }
     return cohesion_force;
   } else {
     return center;
