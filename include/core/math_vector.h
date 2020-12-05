@@ -71,6 +71,12 @@ class MathVector {
    */
   double Distance(const MathVector& other_vector);
 
+  /**
+   * Returns the angle between the vector and the other_vector in radians.
+   * @param other_vector The vector to calculate the angle to.
+   */
+  double Angle(const MathVector& other_vector);
+
   //Operator Overloads
   /**
    * @return Vector component corresponding to the provided index.

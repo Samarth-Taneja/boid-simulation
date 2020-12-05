@@ -59,6 +59,11 @@ double MathVector::Distance(const MathVector& other_vector) {
   return temp_vector.Length();
 }
 
+double MathVector::Angle(const MathVector& other_vector) {
+  double dot_product = *this * other_vector;
+  return acos(dot_product / (this->Length() * other_vector.Length()))
+}
+
 //Vector operations
 double& MathVector::operator[](size_t index) {
   if(index == 0) {
