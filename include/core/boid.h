@@ -19,7 +19,7 @@ class Boid {
    * @param mass The double value of mass.
    */
   Boid(const MathVector& position, const MathVector& velocity,
-       const MathVector& acceleration, double size = 7, double mass = 1,
+       const MathVector& acceleration = MathVector(), double size = 7, double mass = 1,
        ci::Color8u color = ci::Color8u(255,255,255)) :
         position_(position), velocity_(velocity), acceleration_(velocity),
         size_(size), mass_(mass), color_(color) {};
@@ -67,6 +67,7 @@ class Boid {
   const boidsimulation::MathVector& GetVelocity() const;
   const boidsimulation::MathVector& GetAcceleration() const;
   double GetMass() const;
+  double GetSize() const;
   const ci::Color8u& GetColor() const;
 
   double GetSeparationScale() const;

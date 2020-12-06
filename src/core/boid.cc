@@ -123,6 +123,9 @@ const MathVector& Boid::GetAcceleration() const {
 double Boid::GetMass() const {
   return mass_;
 }
+double Boid::GetSize() const {
+  return size_;
+}
 const ci::Color8u& Boid::GetColor() const {
   return color_;
 }
