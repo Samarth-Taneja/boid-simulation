@@ -2,28 +2,20 @@
 
 namespace boidsimulation {
 
-void Boid::ApplyForce(const MathVector& force) {
-  MathVector acceleration = force / mass_;
-  acceleration_ += acceleration;
-  if(acceleration.Length() > max_acceleration_) {
-    acceleration_.ChangeMagnitude(max_acceleration_);
-  }
-}
-
 void Boid::Update(std::vector<Boid>& flock) {
-  acceleration_ *= 0;
-  FlockingBehavior(flock);
-  velocity_ += acceleration_;
+  velocity_ += FlockingBehavior(flock);
   if(velocity_.Length() > max_speed_) {
     velocity_.ChangeMagnitude(max_speed_);
   }
   position_ += velocity_;
 }
 
-void Boid::FlockingBehavior(std::vector<Boid>& flock) {
-  ApplyForce(separation_scale_ * Separation(flock));
-  ApplyForce(alignment_scale_ * Alignment(flock));
-  ApplyForce(cohesion_scale_ * Cohesion(flock));
+MathVector Boid::FlockingBehavior(std::vector<Boid>& flock) {
+  MathVector flocking;
+  flocking += (separation_scale_ * Separation(flock));
+  flocking += (alignment_scale_ * Alignment(flock));
+  flocking += (cohesion_scale_ * Cohesion(flock));
+  return flocking;
 }
 MathVector Boid::Separation(std::vector<Boid>& flock) {
   MathVector separation;
@@ -31,24 +23,13 @@ MathVector Boid::Separation(std::vector<Boid>& flock) {
   for(size_t boid_index = 0; boid_index < flock.size(); ++boid_index) {
     //checking if other Boid is visible to current Boid
     double distance = position_.Distance(flock.at(boid_index).position_);
-    if(distance > 0 && distance <= 2 * size_) {
-      MathVector difference = position_ - flock.at(boid_index).position_;
-      difference.Normalize();
-      difference /= distance; //weight separation by distance to other Boid
-      separation += difference;
+    if(distance > 0 && distance <= 2.5 * size_) {
+      MathVector difference = flock.at(boid_index).position_ - position_;
+      separation -= difference;
       ++count;
     }
   }
-  //calculating average separation
-  if (count > 0) {
-    separation /= count;
-    if(separation.Length() > max_acceleration_) {
-      separation.ChangeMagnitude(max_acceleration_);
-    }
-    return separation;
-  } else {
-    return separation;
-  }
+  return separation;
 }
 MathVector Boid::Alignment(std::vector<Boid>& flock) {
   MathVector heading;
@@ -64,12 +45,8 @@ MathVector Boid::Alignment(std::vector<Boid>& flock) {
   //calculating average heading of flock
   if (count > 0) {
     heading /= count;
-    //heading.ChangeMagnitude(max_speed_);
     //vector pointing from velocity to avg heading of visible flock
-    MathVector alignment_force = heading - velocity_;
-    if(alignment_force.Length() > max_acceleration_) {
-      alignment_force.ChangeMagnitude(max_acceleration_);
-    }
+    MathVector alignment_force = (heading - velocity_) / 5;
     return alignment_force;
   } else {
     return heading;
@@ -90,10 +67,7 @@ MathVector Boid::Cohesion(std::vector<Boid>& flock) {
   if(count > 0) {
     center /= count;
     //vector pointing from position to center of visible flock
-    MathVector cohesion_force = center - position_;
-    if(cohesion_force.Length() > max_acceleration_) {
-      cohesion_force.ChangeMagnitude(max_acceleration_);
-    }
+    MathVector cohesion_force = (center - position_) / 25;
     return cohesion_force;
   } else {
     return center;
@@ -116,12 +90,6 @@ const MathVector& Boid::GetPosition() const {
 }
 const MathVector& Boid::GetVelocity() const {
   return velocity_;
-}
-const MathVector& Boid::GetAcceleration() const {
-  return acceleration_;
-}
-double Boid::GetMass() const {
-  return mass_;
 }
 double Boid::GetSize() const {
   return size_;

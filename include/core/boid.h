@@ -18,11 +18,9 @@ class Boid {
    * @param velocity The MathVector value of velocity.
    * @param mass The double value of mass.
    */
-  Boid(const MathVector& position, const MathVector& velocity,
-       const MathVector& acceleration = MathVector(), double size = 7, double mass = 1,
+  Boid(const MathVector& position, const MathVector& velocity, double size = 7,
        ci::Color8u color = ci::Color8u(255,255,255)) :
-        position_(position), velocity_(velocity), acceleration_(velocity),
-        size_(size), mass_(mass), color_(color) {};
+        position_(position), velocity_(velocity), size_(size), color_(color) {};
 
   /**
    * Adds current velocity to the current position.
@@ -30,9 +28,9 @@ class Boid {
   void Update(std::vector<Boid>& flock);
 
   /**
-   * Changes acceleration based on the 3 rules of flocking behavior.
+   * Returns velocity change vector based on the 3 rules of flocking behavior.
    */
-  void FlockingBehavior(std::vector<Boid>& flock);
+  MathVector FlockingBehavior(std::vector<Boid>& flock);
 
   /**
    * @return A MathVector representing the force applied due to Separation.
@@ -51,12 +49,6 @@ class Boid {
   MathVector Cohesion(std::vector<Boid>& flock);
 
   /**
-   * Changes acceleration based on provided force.
-   * @param force Force to change the acceleration with.
-   */
-  void ApplyForce(const MathVector& force);
-
-  /**
    * Negates Particle's velocity in x,y, or z axis.
    * @param axis Should be 0 if x-axis. 1 if y-axis. 2 if z-axis. 0 by default.
    */
@@ -65,8 +57,6 @@ class Boid {
   //Getters & Setters
   const boidsimulation::MathVector& GetPosition() const;
   const boidsimulation::MathVector& GetVelocity() const;
-  const boidsimulation::MathVector& GetAcceleration() const;
-  double GetMass() const;
   double GetSize() const;
   const ci::Color8u& GetColor() const;
 
@@ -80,14 +70,12 @@ class Boid {
  private:
   boidsimulation::MathVector position_;
   boidsimulation::MathVector velocity_;
-  boidsimulation::MathVector acceleration_;
   double size_ = 7;
   double mass_ = 1;
   ci::Color8u color_;
 
-  double max_speed_ = 10;
-  double max_acceleration_ = 5;
-  double vision_ = 35;
+  double max_speed_ = 7;
+  double vision_ = 50;
 
   double separation_scale_ = 1;
   double alignment_scale_ = 1;
