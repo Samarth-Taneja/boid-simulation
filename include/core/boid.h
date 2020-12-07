@@ -54,6 +54,11 @@ class Boid {
    */
   void WallCollide(int axis = 0);
 
+  /**
+   * Draws the Boid
+   */
+  void Draw() const;
+
   //Getters & Setters
   const boidsimulation::MathVector& GetPosition() const;
   const boidsimulation::MathVector& GetVelocity() const;
@@ -70,12 +75,11 @@ class Boid {
  private:
   boidsimulation::MathVector position_;
   boidsimulation::MathVector velocity_;
-  double size_ = 7;
-  double mass_ = 1;
+  double size_ = 10;
   ci::Color8u color_;
 
   double max_speed_ = 7;
-  double vision_ = 50;
+  double vision_ = 40;
 
   double separation_scale_ = 1;
   double alignment_scale_ = 1;
