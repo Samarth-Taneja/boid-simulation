@@ -4,15 +4,18 @@ namespace boidsimulation {
 
 namespace visualizer {
 
-BoidSimApp::BoidSimApp() {
+BoidSimApp::BoidSimApp() : environment_(glm::vec2(kMargin, kMargin),
+                   kWindowSizeX - (2*kMargin), kWindowSizeY - (2*kMargin)) {
   ci::app::setWindowSize((int) kWindowSizeX, (int) kWindowSizeY);
 }
 
 void BoidSimApp::update() {
+  environment_.Update();
 }
 
 void BoidSimApp::draw() {
   ci::gl::clear(ci::Color("black"));
+  environment_.Draw();
 }
 
 void BoidSimApp::mouseDown(ci::app::MouseEvent event) {

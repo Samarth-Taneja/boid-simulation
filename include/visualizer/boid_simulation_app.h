@@ -23,13 +23,14 @@ class BoidSimApp : public ci::app::App {
   void mouseDrag(ci::app::MouseEvent event) override;
   void keyDown(ci::app::KeyEvent event) override;
 
-  const double kWindowSizeY = 875;
-  const double kWindowSizeX = 1500;
-  const double kMargin = 125;
+  const double kWindowSizeY = 900;
+  const double kWindowSizeX = 1000;
+  const double kMargin = 75;
   const double kHistSizeX = 275;
   const double kHistSizeY = 125;
 
  private:
+  Environment environment_;
 };
 
 }  // namespace visualizer

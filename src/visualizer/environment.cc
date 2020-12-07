@@ -76,9 +76,9 @@ void Environment::Draw() const {
   for(size_t boid_num = 0; boid_num < boids_.size(); ++boid_num) {
     ci::gl::color(boids_.at(boid_num).GetColor());
 
-    glm::vec2 position = glm::vec2(boids_.at(boid_num).GetPosition().x_,
-                                   boids_.at(boid_num).GetPosition().z_);
-    ci::gl::drawSolidCircle(position,boids_.at(boid_num).GetSize());
+    glm::vec2 position = glm::vec2((float)boids_.at(boid_num).GetPosition().x_,
+                                   (float)boids_.at(boid_num).GetPosition().y_);
+    ci::gl::drawSolidCircle(position,(float)boids_.at(boid_num).GetSize());
   }
 }
 
