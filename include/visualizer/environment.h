@@ -74,12 +74,9 @@ class Environment {
   double spawn_margin = 10;
   double pixels_x_;
   double pixels_y_;
-  const std::vector<ci::Color8u> colors_{ci::Color8u(0,0,255),
-                                         ci::Color8u(0,255,0),
-                                         ci::Color8u(255,0,0)};
 
   std::vector<boidsimulation::Boid> boids_;
-  double boid_size_ = 7;
+  double boid_size_ = 7.5;
   double boid_mass_ = 1;
 };
 
