@@ -26,14 +26,16 @@ class Environment {
    * @param size The size of the Boids.
    */
   Environment(const glm::vec2& top_left_corner, double pixels_x, double pixels_y,
-          size_t boid_num = 40, double mass = 1, double size = 7);
+              size_t boid_num = 40, double boid_speed = 8, double boid_size = 10,
+              size_t pred_num = 5, double pred_speed = 5, double pred_size = 15);
 
   /**
    * Initializes Boids in the Environment based on the constructor parameters.
    * Helper function to the constructor.
+   * @param boid_num Number of regular boids to spawn.
+   * @param pred_num Number of predator boids to spawn.
    */
-  void InitializeBoids(size_t boid_num);
-
+  void InitializeBoids(size_t boid_num, size_t pred_num);
 
   /**
    * Performs wall collisions and updates Boid velocities.
@@ -46,6 +48,12 @@ class Environment {
    * @param current_boid The current Boid.
    */
   void CheckWallCollisions(boidsimulation::Boid& current_boid);
+
+  /**
+   * Checks if the Predator Boids have caught any prey Boids and
+   * deletes Prey boids accordingly. Helper function for Update method.
+   */
+  void CheckPredatorCatch();
 
   /**
    * Displays the current state of the Environment in the Cinder application.
@@ -76,8 +84,12 @@ class Environment {
   double pixels_y_;
 
   std::vector<boidsimulation::Boid> boids_;
-  double boid_size_ = 7.5;
-  double boid_mass_ = 1;
+  double boid_size_ = 10;
+  double boid_max_speed_ = 8;
+
+  std::vector<boidsimulation::Boid> predators_;
+  double pred_size_ = 15;
+  double pred_max_speed_ = 5;
 };
 
 }  // namespace visualizer

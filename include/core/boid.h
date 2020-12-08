@@ -18,9 +18,11 @@ class Boid {
    * @param velocity The MathVector value of velocity.
    * @param mass The double value of mass.
    */
-  Boid(const MathVector& position, const MathVector& velocity, double size = 7,
+  Boid(const MathVector& position, const MathVector& velocity,
+       double size = 10, double vision = 50, double max_speed = 8,
        ci::Color8u color = ci::Color8u(255,255,255)) :
-        position_(position), velocity_(velocity), size_(size), color_(color) {};
+        position_(position), velocity_(velocity),
+        size_(size), vision_(vision), max_speed_(max_speed), color_(color) {};
 
   /**
    * Adds current velocity to the current position.
@@ -47,6 +49,11 @@ class Boid {
    * i.e. moving towards the center of the flock.
    */
   MathVector Cohesion(std::vector<Boid>& flock);
+  /**
+   * @return A MathVector representing the force applied to a Predator Boid in
+   * order to chase prey or regular boid to run away from Predators.
+   */
+  MathVector Chase(std::vector<Boid>& flock);
 
   /**
    * Negates Particle's velocity in x,y, or z axis.
@@ -64,6 +71,7 @@ class Boid {
   const boidsimulation::MathVector& GetVelocity() const;
   double GetSize() const;
   const ci::Color8u& GetColor() const;
+  const bool IsPredator() const;
 
   double GetSeparationScale() const;
   double GetAlignmentScale() const;
@@ -75,15 +83,18 @@ class Boid {
  private:
   boidsimulation::MathVector position_;
   boidsimulation::MathVector velocity_;
-  double size_ = 10;
+  double size_;
   ci::Color8u color_;
 
-  double max_speed_ = 7;
-  double vision_ = 40;
+  double max_speed_;
+  double vision_;
+
+  bool predator_ = false;
 
   double separation_scale_ = 1;
   double alignment_scale_ = 1;
   double cohesion_scale_ = 1;
+  double chase_scale_ = 25; //affects predator and prey movement
 };
 
 }  // namespace idealgas

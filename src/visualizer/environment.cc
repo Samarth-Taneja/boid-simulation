@@ -6,33 +6,73 @@ namespace visualizer {
 
 using glm::vec2;
 
-Environment::Environment(const glm::vec2 &top_left_corner, double pixels_x,
-                         double pixels_y, size_t boid_num, double mass,
-                         double size) : top_left_corner_(top_left_corner),
-      pixels_x_(pixels_x), pixels_y_(pixels_y), boid_mass_(mass), boid_size_(size) {
+Environment::Environment(const glm::vec2 &top_left_corner, double pixels_x, double pixels_y,
+                         size_t boid_num, double boid_speed, double boid_size,
+                         size_t pred_num, double pred_speed, double pred_size) :
+      top_left_corner_(top_left_corner), pixels_x_(pixels_x), pixels_y_(pixels_y),
+      boid_size_(boid_size), boid_max_speed_(boid_size),
+      pred_size_(pred_size), pred_max_speed_(pred_speed) {
   //Spawn Boids based on initial specifications
-  InitializeBoids(boid_num);
+  InitializeBoids(boid_num, pred_num);
 }
 
-void Environment::InitializeBoids(size_t boid_num) {
+void Environment::InitializeBoids(size_t boid_num, size_t pred_num) {
   for(size_t current = 0; current < boid_num; ++current) {
     //Randomizing position and velocity
     MathVector position(rand() % (int)(pixels_x_ + 1 - spawn_margin) + top_left_corner_.x + spawn_margin,
                   rand() % (int)(pixels_y_ + 1 - spawn_margin) + top_left_corner_.y + spawn_margin, 0);
-    MathVector velocity(rand() % (2*(int)boid_size_) - (int)boid_size_,
-                                   rand() % (2*(int)boid_size_) - (int)boid_size_, 0);
+    MathVector velocity(rand() % (2*(int)boid_max_speed_) - (int)boid_max_speed_,
+                                   rand() % (2*(int)boid_max_speed_) - (int)boid_max_speed_, 0);
 
-    boids_.push_back(boidsimulation::Boid(position, velocity));
+    boids_.push_back(boidsimulation::Boid(
+        position, velocity, boid_size_, 5*boid_size_, boid_max_speed_));
+  }
+
+  for(size_t current = 0; current < pred_num; ++current) {
+    //Randomizing position and velocity
+    MathVector position(rand() % (int)(pixels_x_ + 1 - spawn_margin) + top_left_corner_.x + spawn_margin,
+                        rand() % (int)(pixels_y_ + 1 - spawn_margin) + top_left_corner_.y + spawn_margin, 0);
+    MathVector velocity(rand() % (2*(int)pred_max_speed_) - (int)pred_max_speed_,
+                        rand() % (2*(int)pred_max_speed_) - (int)pred_max_speed_, 0);
+
+    predators_.push_back(boidsimulation::Boid(
+        position, velocity, pred_size_, 5*pred_size_, pred_max_speed_, ci::Color8u(255,10,10)));
   }
 }
 
 void Environment::Update() {
+  //Check if Predators caught Prey
+  CheckPredatorCatch();
+
   for(auto& it : boids_) {
     //Checking wall collisions
     CheckWallCollisions(it);
-
     //Update with flocking behavior
     it.Update(boids_);
+  }
+  for(auto& it : predators_) {
+    //Checking wall collisions
+    CheckWallCollisions(it);
+    //Update with flocking behavior
+    it.Update(boids_);
+  }
+}
+
+void Environment::CheckPredatorCatch() {
+  for(auto& it : predators_) {
+    for(auto it2 = boids_.begin(); it2 != boids_.end();) {
+      //checking if other Boid is within reach of current Predator Boid
+      MathVector pred_position = it.GetPosition();
+      MathVector boid_position = it2->GetPosition();
+      double distance = pred_position.Distance(boid_position);
+
+      //remove boid if caught or iterate forward
+      if(distance < it.GetSize()) {
+        it2 = boids_.erase(it2);
+      } else {
+        ++it2;
+      }
+    }
   }
 }
 
@@ -73,8 +113,12 @@ void Environment::Draw() const {
   ci::gl::drawStrokedRect(borders);
 
   //Drawing Boids
-  for(size_t boid_num = 0; boid_num < boids_.size(); ++boid_num) {
-    boids_.at(boid_num).Draw();
+  for(auto& boid : boids_) {
+    boid.Draw();
+  }
+  //Drawing Predators
+  for(auto& predator : predators_) {
+    predator.Draw();
   }
 }
 
