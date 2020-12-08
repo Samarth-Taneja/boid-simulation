@@ -41,9 +41,6 @@ void Environment::InitializeBoids(size_t boid_num, size_t pred_num) {
 }
 
 void Environment::Update() {
-  //Check if Predators caught Prey
-  CheckPredatorCatch();
-
   for(auto& it : boids_) {
     //Checking wall collisions
     CheckWallCollisions(it);
@@ -56,6 +53,9 @@ void Environment::Update() {
     //Update with flocking behavior
     it.Update(boids_);
   }
+
+  //Check if Predators caught Prey
+  CheckPredatorCatch();
 }
 
 void Environment::CheckPredatorCatch() {

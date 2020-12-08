@@ -94,7 +94,7 @@ class Boid {
   double separation_scale_ = 1;
   double alignment_scale_ = 1;
   double cohesion_scale_ = 1;
-  double chase_scale_ = 25; //affects predator and prey movement
+  double chase_scale_ = 50; //affects predator and prey movement
 };
 
 }  // namespace idealgas

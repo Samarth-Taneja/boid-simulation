@@ -13,9 +13,11 @@ void Boid::Update(std::vector<Boid>& flock) {
 
 MathVector Boid::FlockingBehavior(std::vector<Boid>& flock) {
   MathVector flocking;
-  flocking += (separation_scale_ * Separation(flock));
-  flocking += (alignment_scale_ * Alignment(flock));
-  flocking += (cohesion_scale_ * Cohesion(flock));
+  if(!predator_) {
+    flocking += (separation_scale_ * Separation(flock));
+    flocking += (alignment_scale_ * Alignment(flock));
+    flocking += (cohesion_scale_ * Cohesion(flock));
+  }
   flocking += (chase_scale_ * Chase(flock));
   return flocking;
 }
