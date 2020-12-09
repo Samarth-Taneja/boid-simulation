@@ -3,6 +3,7 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/params/Params.h"
 #include "environment.h"
 
 namespace boidsimulation {
@@ -17,6 +18,7 @@ class BoidSimApp : public ci::app::App {
  public:
   BoidSimApp();
 
+  void setup() override;
   void draw() override;
   void update() override;
   void mouseDown(ci::app::MouseEvent event) override;
@@ -31,6 +33,7 @@ class BoidSimApp : public ci::app::App {
 
  private:
   Environment environment_;
+  ci::params::InterfaceGl ui;
 };
 
 }  // namespace visualizer

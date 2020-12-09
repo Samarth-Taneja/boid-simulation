@@ -16,6 +16,8 @@ namespace visualizer {
  * and respond to mouse events.
  */
 class Environment {
+  friend class BoidSimApp;
+
  public:
   /**
    * Creates an Environment.
@@ -44,8 +46,8 @@ class Environment {
   void Update();
 
   /**
-   * Checks if the current Boid is colliding with a wall and updates its
-   * velocity accordingly. Helper function for Update method.
+   * Checks if the current Boid is out of bounds and updates its
+   * velocity to return back in bounds. Helper function for Update method.
    * @param current_boid The current Boid.
    */
   void WallBound(boidsimulation::Boid& current_boid);
@@ -100,10 +102,12 @@ class Environment {
   std::vector<boidsimulation::Boid> boids_;
   double boid_size_ = 10;
   double boid_max_speed_ = 8;
+  double separation_ = 1, alignment_ = 1, cohesion_ = 1;
 
   std::vector<boidsimulation::Boid> predators_;
   double pred_size_ = 15;
   double pred_max_speed_ = 5;
+  double chase_ = 50;
 
   std::vector<boidsimulation::Obstacle> obstacles_;
   double obstacle_size_ = 25;

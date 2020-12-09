@@ -42,17 +42,26 @@ void Environment::InitializeBoids(size_t boid_num, size_t pred_num) {
 }
 
 void Environment::Update() {
-  for(auto& it : boids_) {
-    //Checking wall collisions
-    WallBound(it);
+  for(auto& boid : boids_) {
+    //Updating parameters
+    boid.SetSize(boid_size_);
+    boid.SetMaxSpeed(boid_max_speed_);
+    boid.SetSeparationScale(separation_);
+    boid.SetAlignmentScale(alignment_);
+    boid.SetCohesionScale(cohesion_);
     //Update with flocking behavior
-    it.Update(boids_, predators_, obstacles_);
+    boid.Update(boids_, predators_, obstacles_);
+    //Checking if out of bounds
+    WallBound(boid);
   }
-  for(auto& it : predators_) {
-    //Checking wall collisions
-    WallBound(it);
+  for(auto& pred : predators_) {
+    //Updating parameters
+    pred.SetSize(pred_size_);
+    pred.SetMaxSpeed(pred_max_speed_);
     //Update with flocking behavior
-    it.Update(boids_, predators_, obstacles_);
+    pred.Update(boids_, predators_, obstacles_);
+    //Checking wall collisions
+    WallBound(pred);
   }
 
   //Check if Predators caught Prey
@@ -153,6 +162,8 @@ void Environment::SwitchBoidType() {
 
 void Environment::Clear() {
   boids_.clear();
+  predators_.clear();
+  obstacles_.clear();
 }
 
 const std::vector<boidsimulation::Boid> & Environment::GetBoids() const {

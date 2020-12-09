@@ -82,6 +82,7 @@ class Boid {
   void SetVelocity(double x, double y, double z);
 
   double GetSize() const;
+  void SetSize(double size);
   const ci::Color8u& GetColor() const;
   const bool IsPredator() const;
 

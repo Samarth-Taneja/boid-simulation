@@ -208,6 +208,9 @@ void Boid::SetVelocity(double x, double y, double z) {
 double Boid::GetSize() const {
   return size_;
 }
+void Boid::SetSize(double size) {
+  size_ = size;
+}
 const ci::Color8u& Boid::GetColor() const {
   return color_;
 }
