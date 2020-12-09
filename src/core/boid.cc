@@ -136,39 +136,25 @@ MathVector Boid::Chase(std::vector<Boid>& flock) {
 }
 
 MathVector Boid::AvoidObstacles(std::vector<Obstacle>& obstacles) {
-  //Rays emitting in direction of Boid's heading
+  //Ray emitting in direction of Boid's heading
   MathVector ray = velocity_; ray.ChangeMagnitude(vision_);
-  MathVector ray_small = ray/2;
-  ray += position_; ray_small += position_;
+  ray += position_;
 
   MathVector avoidance;
-  //Calculating closest obstacle
-  size_t avoid_index = -1;
-  double closest_distance = std::numeric_limits<double>::max();
+
   for(size_t obstacle_index = 0; obstacle_index < obstacles.size(); ++obstacle_index) {
     Obstacle& obstacle = obstacles.at(obstacle_index);
-    if(HeadingTowards(ray, ray_small, obstacle)) {
-      if(position_.Distance(obstacle.GetPosition()) < closest_distance) {
-        closest_distance = position_.Distance(obstacle.GetPosition());
-        avoid_index = obstacle_index;
-      }
+    MathVector difference = obstacle.GetPosition() - position_;
+    if(difference.Angle(ray) < M_PI/2 || difference.Angle(ray) > 3*M_PI/2) {
+      MathVector force_away = obstacle.GetPosition() - (velocity_ + position_);
+      force_away /= difference.Length() + 1;
+      avoidance -= force_away;
     }
-  }
-
-  if(avoid_index != -1) {
-    ray - obstacles.at(avoid_index).GetPosition();
-    avoidance *= max_speed_;
   }
 
   return avoidance;
 }
 
-bool Boid::HeadingTowards(MathVector& ray, MathVector& ray_small, Obstacle& obstacle) {
-  MathVector intersect = obstacle.GetPosition() - ray;
-  MathVector intersect_small = obstacle.GetPosition() - ray_small;
-  return intersect.Length() < obstacle.GetSize() ||
-         intersect_small.Length() < obstacle.GetSize();
-}
 
 void Boid::WallCollide(int axis) {
   if(axis == 0) {
