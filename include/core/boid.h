@@ -27,12 +27,12 @@ class Boid {
   /**
    * Adds current velocity to the current position.
    */
-  void Update(std::vector<Boid>& flock);
+  void Update(std::vector<Boid>& flock, std::vector<Boid>& preds);
 
   /**
    * Returns velocity change vector based on the 3 rules of flocking behavior.
    */
-  MathVector FlockingBehavior(std::vector<Boid>& flock);
+  MathVector FlockingBehavior(std::vector<Boid>& flock, std::vector<Boid>& preds);
 
   /**
    * @return A MathVector representing the force applied due to Separation.
@@ -51,7 +51,7 @@ class Boid {
   MathVector Cohesion(std::vector<Boid>& flock);
   /**
    * @return A MathVector representing the force applied to a Predator Boid in
-   * order to chase prey or regular boid to run away from Predators.
+   * order to chase prey or prey boid to run away from Predators.
    */
   MathVector Chase(std::vector<Boid>& flock);
 

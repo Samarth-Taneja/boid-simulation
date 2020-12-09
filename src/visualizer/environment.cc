@@ -45,13 +45,13 @@ void Environment::Update() {
     //Checking wall collisions
     CheckWallCollisions(it);
     //Update with flocking behavior
-    it.Update(boids_);
+    it.Update(boids_, predators_);
   }
   for(auto& it : predators_) {
     //Checking wall collisions
     CheckWallCollisions(it);
     //Update with flocking behavior
-    it.Update(boids_);
+    it.Update(boids_, predators_);
   }
 
   //Check if Predators caught Prey
@@ -67,7 +67,7 @@ void Environment::CheckPredatorCatch() {
       double distance = pred_position.Distance(boid_position);
 
       //remove boid if caught or iterate forward
-      if(distance <= 0.5*it.GetSize()) {
+      if(distance <= it.GetSize()) {
         it2 = boids_.erase(it2);
       } else {
         ++it2;
@@ -107,8 +107,10 @@ void Environment::CheckWallCollisions(boidsimulation::Boid &current_boid) {
 
 void Environment::Draw() const {
   //Drawing borders
-  ci::Rectf borders(top_left_corner_, glm::vec2(top_left_corner_.x + pixels_x_,
-                                             top_left_corner_.y + pixels_y_));
+  ci::Rectf borders(glm::vec2(top_left_corner_.x - spawn_margin,
+                              top_left_corner_.y - spawn_margin),
+                    glm::vec2(top_left_corner_.x + pixels_x_ + spawn_margin,
+                              top_left_corner_.y + pixels_y_ + spawn_margin));
   ci::gl::color(ci::Color("white"));
   ci::gl::drawStrokedRect(borders);
 

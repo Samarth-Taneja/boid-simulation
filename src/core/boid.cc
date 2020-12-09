@@ -3,22 +3,24 @@
 
 namespace boidsimulation {
 
-void Boid::Update(std::vector<Boid>& flock) {
-  velocity_ += FlockingBehavior(flock);
+void Boid::Update(std::vector<Boid>& flock, std::vector<Boid>& preds) {
+  velocity_ += FlockingBehavior(flock, preds);
   if(velocity_.Length() > max_speed_) {
     velocity_.ChangeMagnitude(max_speed_);
   }
   position_ += velocity_;
 }
 
-MathVector Boid::FlockingBehavior(std::vector<Boid>& flock) {
+MathVector Boid::FlockingBehavior(std::vector<Boid>& flock, std::vector<Boid>& preds) {
   MathVector flocking;
   if(!predator_) {
     flocking += (separation_scale_ * Separation(flock));
     flocking += (alignment_scale_ * Alignment(flock));
     flocking += (cohesion_scale_ * Cohesion(flock));
+    flocking += (chase_scale_ * Chase(preds));
+  } else {
+    flocking += (chase_scale_ * Chase(flock));
   }
-  flocking += (chase_scale_ * Chase(flock));
   return flocking;
 }
 MathVector Boid::Separation(std::vector<Boid>& flock) {
@@ -106,7 +108,7 @@ MathVector Boid::Chase(std::vector<Boid>& flock) {
 
     if(chase_index != -1) {
       MathVector difference = flock.at(chase_index).position_ - position_;
-      chase -= difference;
+      chase -= 2*difference;
     }
   }
 

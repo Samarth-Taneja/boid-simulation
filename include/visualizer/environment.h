@@ -26,8 +26,8 @@ class Environment {
    * @param size The size of the Boids.
    */
   Environment(const glm::vec2& top_left_corner, double pixels_x, double pixels_y,
-              size_t boid_num = 40, double boid_speed = 8, double boid_size = 10,
-              size_t pred_num = 5, double pred_speed = 5, double pred_size = 15);
+              size_t boid_num = 50, double boid_speed = 8, double boid_size = 10,
+              size_t pred_num = 6, double pred_speed = 5, double pred_size = 15);
 
   /**
    * Initializes Boids in the Environment based on the constructor parameters.
