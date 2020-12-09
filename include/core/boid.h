@@ -58,6 +58,12 @@ class Boid {
   MathVector Chase(std::vector<Boid>& flock);
 
   /**
+   * Returns a MathVector indicating acceleration away from Obstacles in obstacle.
+   * @param obstacles Obstacles to steer away from.
+   */
+  MathVector AvoidObstacles(std::vector<Obstacle>& obstacles);
+
+  /**
    * Negates Particle's velocity in x,y, or z axis.
    * @param axis Should be 0 if x-axis. 1 if y-axis. 2 if z-axis. 0 by default.
    */
@@ -85,6 +91,12 @@ class Boid {
   void SetChaseScale(double chase_scale);
 
  private:
+  /**
+   * Returns true if Boid is heading into Obstacle. Helper method for
+   * AvoidObstacles.
+   */
+  bool HeadingTowards(MathVector& ray, MathVector& ray_small, Obstacle& obstacle);
+
   boidsimulation::MathVector position_;
   boidsimulation::MathVector velocity_;
   double size_;

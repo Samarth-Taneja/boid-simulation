@@ -6,6 +6,7 @@ namespace boidsimulation {
 void Boid::Update(std::vector<Boid>& flock, std::vector<Boid>& preds,
                   std::vector<Obstacle>& obstacles) {
   velocity_ += FlockingBehavior(flock, preds);
+  velocity_ += AvoidObstacles(obstacles);
   if(velocity_.Length() > max_speed_) {
     velocity_.ChangeMagnitude(max_speed_);
   }
@@ -96,7 +97,6 @@ MathVector Boid::Chase(std::vector<Boid>& flock) {
     //Flees from closest Predator boid
     size_t chase_index = -1;
     double closest_distance = std::numeric_limits<double>::max();
-
     for(size_t boid_index = 0; boid_index < flock.size(); ++boid_index) {
       //checking if Predator Boid is visible to current Boid and is the closest to it
       double distance = position_.Distance(flock.at(boid_index).position_);
@@ -117,7 +117,6 @@ MathVector Boid::Chase(std::vector<Boid>& flock) {
     //Chooses one prey boid to chase
     size_t chase_index = -1;
     double closest_distance = std::numeric_limits<double>::max();
-
     for(size_t boid_index = 0; boid_index < flock.size(); ++boid_index) {
       //checking if prey Boid is visible to current Boid and is the closest to it
       double distance = position_.Distance(flock.at(boid_index).position_);
@@ -134,6 +133,41 @@ MathVector Boid::Chase(std::vector<Boid>& flock) {
     }
   }
   return chase;
+}
+
+MathVector Boid::AvoidObstacles(std::vector<Obstacle>& obstacles) {
+  //Rays emitting in direction of Boid's heading
+  MathVector ray = velocity_; ray.ChangeMagnitude(vision_);
+  MathVector ray_small = ray/2;
+  ray += position_; ray_small += position_;
+
+  MathVector avoidance;
+  //Calculating closest obstacle
+  size_t avoid_index = -1;
+  double closest_distance = std::numeric_limits<double>::max();
+  for(size_t obstacle_index = 0; obstacle_index < obstacles.size(); ++obstacle_index) {
+    Obstacle& obstacle = obstacles.at(obstacle_index);
+    if(HeadingTowards(ray, ray_small, obstacle)) {
+      if(position_.Distance(obstacle.GetPosition()) < closest_distance) {
+        closest_distance = position_.Distance(obstacle.GetPosition());
+        avoid_index = obstacle_index;
+      }
+    }
+  }
+
+  if(avoid_index != -1) {
+    ray - obstacles.at(avoid_index).GetPosition();
+    avoidance *= max_speed_;
+  }
+
+  return avoidance;
+}
+
+bool Boid::HeadingTowards(MathVector& ray, MathVector& ray_small, Obstacle& obstacle) {
+  MathVector intersect = obstacle.GetPosition() - ray;
+  MathVector intersect_small = obstacle.GetPosition() - ray_small;
+  return intersect.Length() < obstacle.GetSize() ||
+         intersect_small.Length() < obstacle.GetSize();
 }
 
 void Boid::WallCollide(int axis) {
