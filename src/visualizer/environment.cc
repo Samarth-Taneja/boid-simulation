@@ -45,13 +45,13 @@ void Environment::Update() {
     //Checking wall collisions
     CheckWallCollisions(it);
     //Update with flocking behavior
-    it.Update(boids_, predators_);
+    it.Update(boids_, predators_, obstacles_);
   }
   for(auto& it : predators_) {
     //Checking wall collisions
     CheckWallCollisions(it);
     //Update with flocking behavior
-    it.Update(boids_, predators_);
+    it.Update(boids_, predators_, obstacles_);
   }
 
   //Check if Predators caught Prey

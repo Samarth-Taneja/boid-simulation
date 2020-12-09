@@ -3,7 +3,8 @@
 
 namespace boidsimulation {
 
-void Boid::Update(std::vector<Boid>& flock, std::vector<Boid>& preds) {
+void Boid::Update(std::vector<Boid>& flock, std::vector<Boid>& preds,
+                  std::vector<Obstacle>& obstacles) {
   velocity_ += FlockingBehavior(flock, preds);
   if(velocity_.Length() > max_speed_) {
     velocity_.ChangeMagnitude(max_speed_);
@@ -194,14 +195,20 @@ double Boid::GetAlignmentScale() const {
 double Boid::GetCohesionScale() const {
   return cohesion_scale_;
 }
-void Boid::SetSeparationScale(double separationScale) {
-  separation_scale_ = separationScale;
+double Boid::GetChaseScale() const {
+  return chase_scale_;
 }
-void Boid::SetAlignmentScale(double alignmentScale) {
-  alignment_scale_ = alignmentScale;
+void Boid::SetSeparationScale(double separation_scale) {
+  separation_scale_ = separation_scale;
 }
-void Boid::SetCohesionScale(double cohesionScale) {
-  cohesion_scale_ = cohesionScale;
+void Boid::SetAlignmentScale(double alignment_scale) {
+  alignment_scale_ = alignment_scale;
+}
+void Boid::SetCohesionScale(double cohesion_scale) {
+  cohesion_scale_ = cohesion_scale;
+}
+void Boid::SetChaseScale(double chase_scale) {
+  chase_scale_ = chase_scale;
 }
 
 }  // namespace idealgas

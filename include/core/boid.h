@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/math_vector.h>
+#include <core/obstacle.h>
 #include "cinder/gl/gl.h"
 #include <vector>
 
@@ -27,7 +28,8 @@ class Boid {
   /**
    * Adds current velocity to the current position.
    */
-  void Update(std::vector<Boid>& flock, std::vector<Boid>& preds);
+  void Update(std::vector<Boid>& flock, std::vector<Boid>& preds,
+              std::vector<Obstacle>& obstacles);
 
   /**
    * Returns velocity change vector based on the 3 rules of flocking behavior.
@@ -76,9 +78,11 @@ class Boid {
   double GetSeparationScale() const;
   double GetAlignmentScale() const;
   double GetCohesionScale() const;
-  void SetSeparationScale(double separationScale);
-  void SetAlignmentScale(double alignmentScale);
-  void SetCohesionScale(double cohesionScale);
+  double GetChaseScale() const;
+  void SetSeparationScale(double separation_scale);
+  void SetAlignmentScale(double alignment_scale);
+  void SetCohesionScale(double cohesion_scale);
+  void SetChaseScale(double chase_scale);
 
  private:
   boidsimulation::MathVector position_;
@@ -94,7 +98,7 @@ class Boid {
   double separation_scale_ = 1;
   double alignment_scale_ = 1;
   double cohesion_scale_ = 1;
-  double chase_scale_ = 50; //affects predator and prey movement
+  double chase_scale_ = 30; //affects predator and prey movement
 };
 
 }  // namespace idealgas
