@@ -19,11 +19,19 @@ void BoidSimApp::draw() {
 }
 
 void BoidSimApp::mouseDown(ci::app::MouseEvent event) {
-  environment_.AddBoid(event.getPos());
+  if(event.isLeftDown()) {
+    environment_.AddBoid(event.getPos());
+  }
+
+  if(event.isRightDown()) {
+    environment_.AddObstacle(event.getPos());
+  }
 }
 
 void BoidSimApp::mouseDrag(ci::app::MouseEvent event) {
-  environment_.AddBoid(event.getPos());
+  if(event.isLeftDown()) {
+    environment_.AddBoid(event.getPos());
+  }
 }
 
 void BoidSimApp::keyDown(ci::app::KeyEvent event) {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/boid.h>
+#include <core/obstacle.h>
 
 #include <vector>
 
@@ -68,6 +69,12 @@ class Environment {
   void AddBoid(const glm::vec2& brush_screen_coords);
 
   /**
+   * Adds an Obstacle at the click location.
+   * @param brush_screen_coords
+   */
+  void AddObstacle(const glm::vec2& brush_screen_coords);
+
+  /**
    * Remove all Boids from the simulation.
    */
   void Clear();
@@ -90,6 +97,9 @@ class Environment {
   std::vector<boidsimulation::Boid> predators_;
   double pred_size_ = 15;
   double pred_max_speed_ = 5;
+
+  std::vector<boidsimulation::Obstacle> obstacles_;
+  double obstacle_size_ = 25;
 };
 
 }  // namespace visualizer

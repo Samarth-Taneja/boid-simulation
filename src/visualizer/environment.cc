@@ -122,6 +122,10 @@ void Environment::Draw() const {
   for(auto& predator : predators_) {
     predator.Draw();
   }
+  //Drawing Obstacles
+  for(auto& obstacle : obstacles_) {
+    obstacle.Draw();
+  }
 }
 
 void Environment::AddBoid(const glm::vec2 &brush_screen_coords) {
@@ -136,6 +140,19 @@ void Environment::AddBoid(const glm::vec2 &brush_screen_coords) {
                         rand() % (2*(int)boid_size_) - (int)boid_size_, 0);
 
     boids_.push_back(boidsimulation::Boid(position, velocity));
+  }
+}
+
+void Environment::AddObstacle(const glm::vec2& brush_screen_coords) {
+  double left = top_left_corner_.x + obstacle_size_ ,
+         right = top_left_corner_.x + pixels_x_ - obstacle_size_ ,
+         top = top_left_corner_.y + obstacle_size_,
+         bottom = top_left_corner_.y + pixels_y_ - obstacle_size_ ;
+  //Only spawn Obstacle if within tank bounds
+  if(brush_screen_coords.x > left && brush_screen_coords.x < right &&
+     brush_screen_coords.y > top && brush_screen_coords.y < bottom) {
+    MathVector position(brush_screen_coords.x, brush_screen_coords.y, 0);
+    obstacles_.push_back(Obstacle(position,obstacle_size_));
   }
 }
 
