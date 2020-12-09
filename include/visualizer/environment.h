@@ -48,7 +48,7 @@ class Environment {
    * velocity accordingly. Helper function for Update method.
    * @param current_boid The current Boid.
    */
-  void CheckWallCollisions(boidsimulation::Boid& current_boid);
+  void WallBound(boidsimulation::Boid& current_boid);
 
   /**
    * Checks if the Predator Boids have caught any prey Boids and

@@ -77,6 +77,9 @@ class Boid {
   //Getters & Setters
   const boidsimulation::MathVector& GetPosition() const;
   const boidsimulation::MathVector& GetVelocity() const;
+  void SetVelocity(MathVector& velocity);
+  void SetVelocity(double x, double y, double z);
+
   double GetSize() const;
   const ci::Color8u& GetColor() const;
   const bool IsPredator() const;
@@ -89,6 +92,9 @@ class Boid {
   void SetAlignmentScale(double alignment_scale);
   void SetCohesionScale(double cohesion_scale);
   void SetChaseScale(double chase_scale);
+
+  double GetMaxSpeed() const;
+  void SetMaxSpeed(double max_speed);
 
  private:
   /**
@@ -111,6 +117,7 @@ class Boid {
   double alignment_scale_ = 1;
   double cohesion_scale_ = 1;
   double chase_scale_ = 30; //affects predator and prey movement
+  double obstacle_scale_ = 20;
 };
 
 }  // namespace idealgas

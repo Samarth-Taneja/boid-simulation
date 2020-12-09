@@ -43,13 +43,13 @@ void Environment::InitializeBoids(size_t boid_num, size_t pred_num) {
 void Environment::Update() {
   for(auto& it : boids_) {
     //Checking wall collisions
-    CheckWallCollisions(it);
+    WallBound(it);
     //Update with flocking behavior
     it.Update(boids_, predators_, obstacles_);
   }
   for(auto& it : predators_) {
     //Checking wall collisions
-    CheckWallCollisions(it);
+    WallBound(it);
     //Update with flocking behavior
     it.Update(boids_, predators_, obstacles_);
   }
@@ -76,32 +76,20 @@ void Environment::CheckPredatorCatch() {
   }
 }
 
-void Environment::CheckWallCollisions(boidsimulation::Boid &current_boid) {
+void Environment::WallBound(boidsimulation::Boid &boid) {
   double left = top_left_corner_.x, right = top_left_corner_.x + pixels_x_,
       top = top_left_corner_.y, bottom = top_left_corner_.y + pixels_y_;
 
-  //Collision with vertical walls
-  //If Boid is close to left wall and moving left
-  if((current_boid.GetPosition().x_ - left) < current_boid.GetSize() &&
-      current_boid.GetVelocity().x_ < 0) {
-    current_boid.WallCollide();
-  }
-  //If Boid is close to right wall and moving right
-  if ((right - current_boid.GetPosition().x_) < current_boid.GetSize()
-      && current_boid.GetVelocity().x_ > 0) {
-    current_boid.WallCollide();
+  if(boid.GetPosition().x_ < left) {
+    boid.SetVelocity(boid.GetMaxSpeed(), boid.GetVelocity().y_, boid.GetVelocity().z_);
+  } else if(boid.GetPosition().x_ > right) {
+    boid.SetVelocity(-boid.GetMaxSpeed(), boid.GetVelocity().y_, boid.GetVelocity().z_);
   }
 
-  //Collision with horizontal walls
-  //If Boid is close to top wall and moving up
-  if((current_boid.GetPosition().y_ - top) < current_boid.GetSize() &&
-      current_boid.GetVelocity().y_ < 0) {
-    current_boid.WallCollide(1);
-  }
-  //If Boid is close to bottom wall and moving down
-  if((bottom - current_boid.GetPosition().y_) < current_boid.GetSize()
-     && current_boid.GetVelocity().y_ > 0) {
-    current_boid.WallCollide(1);
+  if(boid.GetPosition().y_ < top) {
+    boid.SetVelocity(boid.GetVelocity().x_, boid.GetMaxSpeed(), boid.GetVelocity().z_);
+  } else if(boid.GetPosition().y_ > bottom) {
+    boid.SetVelocity(boid.GetVelocity().x_, -boid.GetMaxSpeed(), boid.GetVelocity().z_);
   }
 }
 
@@ -131,7 +119,7 @@ void Environment::Draw() const {
 void Environment::AddBoid(const glm::vec2 &brush_screen_coords) {
   double left = top_left_corner_.x, right = top_left_corner_.x + pixels_x_,
       top = top_left_corner_.y, bottom = top_left_corner_.y + pixels_y_;
-  //Only spawn Boid if within tank bounds
+  //Only spawn Boid if within environment bounds
   if(brush_screen_coords.x > left && brush_screen_coords.x < right &&
      brush_screen_coords.y > top && brush_screen_coords.y < bottom) {
     MathVector position(brush_screen_coords.x, brush_screen_coords.y, 0);

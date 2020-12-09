@@ -6,7 +6,7 @@ namespace boidsimulation {
 void Boid::Update(std::vector<Boid>& flock, std::vector<Boid>& preds,
                   std::vector<Obstacle>& obstacles) {
   velocity_ += FlockingBehavior(flock, preds);
-  velocity_ += 20*AvoidObstacles(obstacles);
+  velocity_ += obstacle_scale_*AvoidObstacles(obstacles);
   if(velocity_.Length() > max_speed_) {
     velocity_.ChangeMagnitude(max_speed_);
   }
@@ -198,6 +198,13 @@ const MathVector& Boid::GetPosition() const {
 const MathVector& Boid::GetVelocity() const {
   return velocity_;
 }
+void Boid::SetVelocity(MathVector& velocity) {
+  velocity_ = velocity;
+}
+void Boid::SetVelocity(double x, double y, double z) {
+  velocity_ = MathVector(x,y,z);
+}
+
 double Boid::GetSize() const {
   return size_;
 }
@@ -231,6 +238,13 @@ void Boid::SetCohesionScale(double cohesion_scale) {
 }
 void Boid::SetChaseScale(double chase_scale) {
   chase_scale_ = chase_scale;
+}
+
+double Boid::GetMaxSpeed() const {
+  return max_speed_;
+}
+void Boid::SetMaxSpeed(double max_speed) {
+  max_speed_ = max_speed;
 }
 
 }  // namespace idealgas

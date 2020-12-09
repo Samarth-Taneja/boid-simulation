@@ -4,8 +4,8 @@ namespace boidsimulation {
 
 namespace visualizer {
 
-BoidSimApp::BoidSimApp() : environment_(glm::vec2(kMargin, kMargin),
-                   kWindowSizeX - (2*kMargin), kWindowSizeY - (2*kMargin)) {
+BoidSimApp::BoidSimApp() : environment_(glm::vec2(0, 0),
+                   kWindowSizeX, kWindowSizeY) {
   ci::app::setWindowSize((int) kWindowSizeX, (int) kWindowSizeY);
 }
 
