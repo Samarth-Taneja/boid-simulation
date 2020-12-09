@@ -6,7 +6,7 @@ namespace boidsimulation {
 void Boid::Update(std::vector<Boid>& flock, std::vector<Boid>& preds,
                   std::vector<Obstacle>& obstacles) {
   velocity_ += FlockingBehavior(flock, preds);
-  velocity_ += AvoidObstacles(obstacles);
+  velocity_ += 20*AvoidObstacles(obstacles);
   if(velocity_.Length() > max_speed_) {
     velocity_.ChangeMagnitude(max_speed_);
   }
@@ -135,26 +135,28 @@ MathVector Boid::Chase(std::vector<Boid>& flock) {
   return chase;
 }
 
+/* Code based on mathematical formulas provided in Potential Collision Detection
+ * Procedure given on this website:
+ * http://www2.cs.uregina.ca/~anima/408/Notes/ControllingGroups/Flocking.htm */
 MathVector Boid::AvoidObstacles(std::vector<Obstacle>& obstacles) {
-  //Ray emitting in direction of Boid's heading
-  MathVector ray = velocity_; ray.ChangeMagnitude(vision_);
-  ray += position_;
-
   MathVector avoidance;
+  for(auto& obstacle : obstacles) {
+    //Checking if Boid will collide
+    MathVector difference = obstacle.GetPosition() - position_; // C-P
+    double s = difference.Length(); // |C-P|
+    double k = (difference * velocity_) / velocity_.Length(); // (C-P) * V/|V|
+    double t = sqrt(pow(s,2) - pow(k,2)); // (s^2 - k^2)^1/2
+    double r = obstacle.GetSize() + size_;
+    bool will_collide = t < r; // if t < r, will collide
 
-  for(size_t obstacle_index = 0; obstacle_index < obstacles.size(); ++obstacle_index) {
-    Obstacle& obstacle = obstacles.at(obstacle_index);
-    MathVector difference = obstacle.GetPosition() - position_;
-    if(difference.Angle(ray) < M_PI/2 || difference.Angle(ray) > 3*M_PI/2) {
+    if(will_collide) {
       MathVector force_away = obstacle.GetPosition() - (velocity_ + position_);
-      force_away /= difference.Length() + 1;
+      force_away /= (pow(difference.Length(),1.35) + 1);
       avoidance -= force_away;
     }
   }
-
   return avoidance;
 }
-
 
 void Boid::WallCollide(int axis) {
   if(axis == 0) {
