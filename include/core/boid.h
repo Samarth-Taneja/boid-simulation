@@ -20,10 +20,11 @@ class Boid {
    * @param mass The double value of mass.
    */
   Boid(const MathVector& position, const MathVector& velocity,
-       double size = 10, double vision = 50, double max_speed = 8,
+       double size = 10, double vision = 50, double max_speed = 8, bool is_pred = false,
        ci::Color8u color = ci::Color8u(255,255,255)) :
         position_(position), velocity_(velocity),
-        size_(size), vision_(vision), max_speed_(max_speed), color_(color) {};
+        size_(size), vision_(vision), max_speed_(max_speed),
+        predator_(is_pred), color_(color) {};
 
   /**
    * Adds current velocity to the current position.
@@ -116,8 +117,8 @@ class Boid {
   double separation_scale_ = 1;
   double alignment_scale_ = 1;
   double cohesion_scale_ = 1;
-  double chase_scale_ = 30; //affects predator and prey movement
-  double obstacle_scale_ = 20;
+  double chase_scale_ = 20; //affects predator and prey movement
+  double obstacle_scale_ = 25;
 };
 
 }  // namespace idealgas

@@ -36,7 +36,8 @@ void Environment::InitializeBoids(size_t boid_num, size_t pred_num) {
                         rand() % (2*(int)pred_max_speed_) - (int)pred_max_speed_, 0);
 
     predators_.push_back(boidsimulation::Boid(
-        position, velocity, pred_size_, 5*pred_size_, pred_max_speed_, ci::Color8u(255,10,10)));
+        position, velocity, pred_size_, 5*pred_size_,
+        pred_max_speed_, true, ci::Color8u(255,10,10)));
   }
 }
 
@@ -116,10 +117,20 @@ void Environment::AddBoid(const glm::vec2 &brush_screen_coords) {
      brush_screen_coords.y > top && brush_screen_coords.y < bottom) {
     MathVector position(brush_screen_coords.x, brush_screen_coords.y, 0);
     //Randomizing velocity
-    MathVector velocity(rand() % (2*(int)boid_size_) - (int)boid_size_,
-                        rand() % (2*(int)boid_size_) - (int)boid_size_, 0);
+    if(!spawn_predator_) {
+      MathVector velocity(rand() % (2*(int)boid_max_speed_) - (int)boid_max_speed_,
+                          rand() % (2*(int)boid_max_speed_) - (int)boid_max_speed_, 0);
 
-    boids_.push_back(boidsimulation::Boid(position, velocity));
+      boids_.push_back(boidsimulation::Boid(position, velocity, boid_size_,
+                                            5*boid_size_, boid_max_speed_));
+    } else {
+      MathVector velocity(rand() % (2*(int)pred_max_speed_) - (int)pred_max_speed_,
+                          rand() % (2*(int)pred_max_speed_) - (int)pred_max_speed_, 0);
+
+      predators_.push_back(boidsimulation::Boid(
+          position, velocity, pred_size_, 5*pred_size_,
+          pred_max_speed_, true, ci::Color8u(255,10,10)));
+    }
   }
 }
 
@@ -134,6 +145,10 @@ void Environment::AddObstacle(const glm::vec2& brush_screen_coords) {
     MathVector position(brush_screen_coords.x, brush_screen_coords.y, 0);
     obstacles_.push_back(Obstacle(position,obstacle_size_));
   }
+}
+
+void Environment::SwitchBoidType() {
+  spawn_predator_ = !spawn_predator_;
 }
 
 void Environment::Clear() {

@@ -75,6 +75,11 @@ class Environment {
   void AddObstacle(const glm::vec2& brush_screen_coords);
 
   /**
+   * Switches which type of boid to spawn (prey/predator)
+   */
+  void SwitchBoidType();
+
+  /**
    * Remove all Boids from the simulation.
    */
   void Clear();
@@ -89,6 +94,8 @@ class Environment {
   double spawn_margin = 10;
   double pixels_x_;
   double pixels_y_;
+
+  bool spawn_predator_ = false;
 
   std::vector<boidsimulation::Boid> boids_;
   double boid_size_ = 10;

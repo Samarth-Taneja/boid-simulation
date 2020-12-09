@@ -37,6 +37,7 @@ void BoidSimApp::mouseDrag(ci::app::MouseEvent event) {
 void BoidSimApp::keyDown(ci::app::KeyEvent event) {
   switch (event.getCode()) {
     case ci::app::KeyEvent::KEY_RIGHT:
+      environment_.SwitchBoidType();
       break;
 
     case ci::app::KeyEvent::KEY_DELETE:
