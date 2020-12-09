@@ -94,14 +94,6 @@ void Environment::WallBound(boidsimulation::Boid &boid) {
 }
 
 void Environment::Draw() const {
-  //Drawing borders
-  ci::Rectf borders(glm::vec2(top_left_corner_.x - spawn_margin,
-                              top_left_corner_.y - spawn_margin),
-                    glm::vec2(top_left_corner_.x + pixels_x_ + spawn_margin,
-                              top_left_corner_.y + pixels_y_ + spawn_margin));
-  ci::gl::color(ci::Color("white"));
-  ci::gl::drawStrokedRect(borders);
-
   //Drawing Boids
   for(auto& boid : boids_) {
     boid.Draw();
