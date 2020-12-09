@@ -90,15 +90,27 @@ MathVector Boid::Cohesion(std::vector<Boid>& flock) {
 MathVector Boid::Chase(std::vector<Boid>& flock) {
   MathVector chase;
   if(!predator_) {
+    //Flees from closest Predator boid
+    size_t chase_index = -1;
+    double closest_distance = std::numeric_limits<double>::max();
+
     for(size_t boid_index = 0; boid_index < flock.size(); ++boid_index) {
-      //checking if other Boid is visible to current Boid
+      //checking if Predator Boid is visible to current Boid and is the closest to it
       double distance = position_.Distance(flock.at(boid_index).position_);
-      if(distance > 0 && distance <= vision_ && flock.at(boid_index).predator_) {
-        MathVector difference = flock.at(boid_index).position_ - position_;
-        chase -= difference;
+      if(distance > 0 && distance <= vision_ && flock.at(boid_index).predator_
+          && distance < closest_distance) {
+        closest_distance = distance;
+        chase_index = boid_index;
       }
     }
-  } else {
+
+    if(chase_index != -1) {
+      MathVector difference = flock.at(chase_index).position_ - position_;
+      chase -= difference;
+    }
+  }
+
+  if(predator_) {
     //Chooses one prey boid to chase
     size_t chase_index = -1;
     double closest_distance = std::numeric_limits<double>::max();

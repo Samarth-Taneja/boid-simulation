@@ -67,7 +67,7 @@ void Environment::CheckPredatorCatch() {
       double distance = pred_position.Distance(boid_position);
 
       //remove boid if caught or iterate forward
-      if(distance < it.GetSize()) {
+      if(distance <= 0.5*it.GetSize()) {
         it2 = boids_.erase(it2);
       } else {
         ++it2;
