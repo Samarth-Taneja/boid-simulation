@@ -24,7 +24,7 @@ Boids are softly bound to the visualization screen, meaning they can leave the b
 
 ### Running the Simulation
 
-To run the simulation simply run the boid-simulation-visualizer. You can spawn Boids by using left click ond place objects using right click. 
+To run the simulation simply run the boid-simulation-visualizer. You can spawn Boids by using left click and place objects using right click. 
 
 Spawning regular and Predator boids can be toggled using the GUI and other paramaters such as flocking behavior, size, and max speed can aslo be changed. 
 
