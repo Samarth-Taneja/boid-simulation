@@ -134,7 +134,7 @@ double operator*(const MathVector& first, const MathVector& second) {
 }
 MathVector operator%(const MathVector& first, const MathVector& second) {
   MathVector cross(first.y_*second.z_ - first.z_*second.y_,
-                   first.z_*first.x_ - first.x_*first.z_,
+                   first.z_*second.x_ - first.x_*second.z_,
                    first.x_*second.y_ - first.y_*second.x_);
   return cross;
 }
