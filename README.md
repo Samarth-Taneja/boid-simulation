@@ -1,6 +1,6 @@
 # Boids Simulation
 
-###Background
+### Background
 
 This is a Boid simulation, an artificial life program which simulates the flocking behaviour of birds/swarming behavior of fish. It is based on the rules defined by by [Craig Reynolds in 1986](http://www.red3d.com/cwr/boids/).
 
@@ -22,7 +22,7 @@ The simulation also contains circular Obstacles, which the Boids have movement r
 
 Boids are softly bound to the visualization screen, meaning they can leave the bounds of the screen but quickly return if they do so.
 
-###Running the Simulation
+### Running the Simulation
 
 To run the simulation simply run the boid-simulation-visualizer. You can spawn Boids by using left click ond place objects using right click. 
 
