@@ -22,10 +22,14 @@ The simulation also contains circular Obstacles, which the Boids have movement r
 
 Boids are softly bound to the visualization screen, meaning they can leave the bounds of the screen but quickly return if they do so.
 
+![simulation running](https://i.ibb.co/PGpRZHv/On-Paste-20201218-210541.png)
+
 ### Running the Simulation
 
-To run the simulation simply run the boid-simulation-visualizer. You can spawn Boids by using left click and place Obstacles using right click. 
+This simulation requires Cinder to run. Once installed, copy this repository into the Cinder root directory.
 
-Spawning regular and Predator boids can be toggled using the GUI and other paramaters such as flocking behavior, size, and max speed can also be changed. 
+To run the simulation simply run the boid-simulation-visualizer or cinder-app-main.cc file. 
+
+You can spawn Boids by using left click and place Obstacles using right click. Spawning regular and Predator boids can be toggled using the GUI and other parameters such as flocking behavior, size, and max speed can also be changed. 
 
 ![GUI](https://i.ibb.co/1LWckn7/image.png)
